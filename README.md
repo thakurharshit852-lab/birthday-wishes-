@@ -38,7 +38,7 @@ A beautiful, personalized birthday webpage with:
 ## 🚀 How to Personalize for Someone Else?
 
 Just change the `name` parameter in the URL:
-https://programmervishnu.github.io/happy-birthday/?name=Vanshikaji
+https://thakurharshit852-lab.github.io/happy-birthday-Vanshika-/?name=Vanshika
 
 🎁 Works for **anyone** you want to make feel special!
 
