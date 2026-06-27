@@ -1,22 +1,341 @@
-No problem! I'll build a complete beautiful birthday website for Vanshika right now! 🎂
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Vanshika 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-Here's your complete `index.html`! 🎉 It includes:
+    :root {
+      --rose:    #ff6b9d;
+      --lilac:   #c084fc;
+      --gold:    #fbbf24;
+      --soft-bg: #0f0718;
+      --card-bg: rgba(255,255,255,0.05);
+      --white:   #fff;
+    }
 
-- 🎂 Bouncing cake with Vanshika's name in a glowing gradient
-- ✨ Starfield background + confetti on load
-- 🎈 Balloons that fly up on every shayari click
-- 🪄 All 6 shayaris from your list
-- 💌 4 birthday wish cards
-- 🔗 Auto-reads the `?name=` from the URL
+    body {
+      background: var(--soft-bg);
+      font-family: 'Poppins', sans-serif;
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
----
+    /* ── Starfield ── */
+    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle var(--d) ease-in-out infinite alternate;
+      opacity: 0;
+    }
+    @keyframes twinkle { to { opacity: 0.9; } }
 
-## How to upload to GitHub
+    /* ── Confetti canvas ── */
+    #confetti-canvas {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    }
 
-1. Download the `index.html` file above
-2. Go to your **`happy-birthday-Vanshika-`** repo on GitHub
-3. Click **"Add file" → "Upload files"**
-4. Upload the `index.html`
-5. Click **"Commit changes"**
+    /* ── Layout ── */
+    .page { position: relative; z-index: 2; }
 
-Then go to **Settings → Pages** and make sure it's enabled on the `main` branch. Your site will be live in 1-2 minutes! 🚀
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .cake-emoji {
+      font-size: clamp(4rem, 15vw, 7rem);
+      animation: bounce 1.6s ease-in-out infinite;
+      display: block; margin-bottom: 1rem;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-18px); }
+    }
+
+    .hero-name {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3rem, 14vw, 7rem);
+      background: linear-gradient(135deg, var(--rose), var(--lilac), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.08em;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-surprise {
+      background: linear-gradient(135deg, var(--rose), var(--lilac));
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2.4rem;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      box-shadow: 0 0 30px rgba(255,107,157,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-surprise:hover { transform: scale(1.06); box-shadow: 0 0 45px rgba(255,107,157,0.65); }
+    .btn-surprise:active { transform: scale(0.97); }
+
+    /* ── Shayari card ── */
+    .shayari-wrap {
+      margin-top: 2.5rem;
+      max-width: 480px;
+      width: 100%;
+    }
+    .shayari-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 1.6rem 1.8rem;
+      font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+      line-height: 1.8;
+      color: rgba(255,255,255,0.9);
+      font-style: italic;
+      min-height: 90px;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.4s;
+      backdrop-filter: blur(8px);
+    }
+    .shayari-card.fade { opacity: 0; }
+
+    /* ── Wishes section ── */
+    .wishes {
+      padding: 4rem 1.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .section-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 8vw, 3rem);
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .wish-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+    .wish-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 1.4rem 1rem;
+      backdrop-filter: blur(6px);
+      transition: transform 0.25s;
+    }
+    .wish-card:hover { transform: translateY(-6px); }
+    .wish-card .icon { font-size: 2.2rem; margin-bottom: 0.6rem; display: block; }
+    .wish-card p { font-size: 0.9rem; color: rgba(255,255,255,0.78); line-height: 1.6; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem 3rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+    footer span { color: var(--rose); }
+
+    /* ── Balloon burst ── */
+    .balloons { position: fixed; bottom: -120px; left: 0; width: 100%; z-index: 0; pointer-events: none; display: flex; justify-content: space-around; }
+    .balloon {
+      font-size: 3rem;
+      animation: rise var(--r) ease-in forwards;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div id="stars"></div>
+
+<div class="page">
+  <!-- Hero -->
+  <section class="hero">
+    <span class="cake-emoji">🎂</span>
+    <h1 class="hero-name" id="bday-name">Vanshika</h1>
+    <p class="hero-sub">Wishing you a day as magical as you are ✨</p>
+
+    <button class="btn-surprise" onclick="newShayari()">🪄 Read a Shayari</button>
+
+    <div class="shayari-wrap">
+      <div class="shayari-card" id="shayari">
+        सितारों से आगे जहाँ और भी है,<br>अभी इश्क़ के इम्तिहान और भी हैं ✨
+      </div>
+    </div>
+  </section>
+
+  <!-- Wishes -->
+  <section class="wishes">
+    <h2 class="section-title">💌 Birthday Wishes</h2>
+    <div class="wish-grid">
+      <div class="wish-card">
+        <span class="icon">🌸</span>
+        <p>May every morning bring you a reason to smile and every night a reason to be grateful.</p>
+      </div>
+      <div class="wish-card">
+        <span class="icon">💫</span>
+        <p>May your dreams be bigger than your fears and your joy louder than your doubts.</p>
+      </div>
+      <div class="wish-card">
+        <span class="icon">🎁</span>
+        <p>May this year gift you everything you've whispered to the stars at midnight.</p>
+      </div>
+      <div class="wish-card">
+        <span class="icon">❤️</span>
+        <p>You deserve all the love, laughter, and magic the universe has to offer.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Made with <span>♥</span> by Vishnu &nbsp;·&nbsp; Happy Birthday <span id="footer-name">Vanshika</span> 🎉</footer>
+</div>
+
+<!-- Balloons -->
+<div class="balloons" id="balloons"></div>
+
+<script>
+  /* ── Read name from URL ── */
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('name') || 'Vanshika';
+  document.getElementById('bday-name').textContent = name;
+  document.getElementById('footer-name').textContent = name;
+  document.title = `Happy Birthday ${name} 🎂`;
+
+  /* ── Starfield ── */
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+1).toFixed(1)}s;animation-delay:${(Math.random()*4).toFixed(1)}s`;
+    starsEl.appendChild(s);
+  }
+
+  /* ── Shayari list ── */
+  const shayariList = [
+    "सितारों से आगे जहाँ और भी है,\nअभी इश्क़ के इम्तिहान और भी हैं ✨",
+    "मुस्कुराहट तेरी पहचान बन जाए,\nहर दिन तेरा त्योहार बन जाए 😊",
+    "हर खुशी तेरे कदम चूमे,\nबस यही दुआ है मेरी ❤️",
+    `ज़िंदगी खूबसूरत है अगर दोस्त जैसे ${name} साथ हों 😄`,
+    "तू जहाँ भी जाए खुशियाँ मिलें,\nहर राह पर रोशनी मिले 🌟",
+    "दिल से दुआ है तेरे लिए,\nहर ख्वाब पूरा हो जाए 🌙"
+  ];
+  let lastIdx = -1;
+
+  function newShayari() {
+    const card = document.getElementById('shayari');
+    card.classList.add('fade');
+    setTimeout(() => {
+      let idx;
+      do { idx = Math.floor(Math.random() * shayariList.length); } while (idx === lastIdx);
+      lastIdx = idx;
+      card.innerHTML = shayariList[idx].replace(/\n/g, '<br>');
+      card.classList.remove('fade');
+    }, 400);
+    launchBalloons();
+  }
+
+  /* ── Balloons ── */
+  function launchBalloons() {
+    const wrap = document.getElementById('balloons');
+    wrap.innerHTML = '';
+    const emojis = ['🎈','🎀','🌸','💜','🎊','🌺','💖'];
+    for (let i = 0; i < 7; i++) {
+      const b = document.createElement('span');
+      b.className = 'balloon';
+      b.textContent = emojis[i % emojis.length];
+      const delay = (i * 0.18).toFixed(2);
+      const dur   = (2.8 + Math.random() * 1.5).toFixed(2);
+      b.style.cssText = `--r:${dur}s;animation-delay:${delay}s`;
+      wrap.appendChild(b);
+    }
+  }
+
+  /* ── Confetti ── */
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx    = canvas.getContext('2d');
+  let pieces   = [];
+  let animating = false;
+
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function spawnConfetti() {
+    const colors = ['#ff6b9d','#c084fc','#fbbf24','#34d399','#60a5fa','#f472b6'];
+    for (let i = 0; i < 120; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 200,
+        w: 8 + Math.random() * 8,
+        h: 5 + Math.random() * 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 3,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.18,
+        alpha: 1
+      });
+    }
+    if (!animating) animateConfetti();
+  }
+
+  function animateConfetti() {
+    animating = true;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces = pieces.filter(p => p.alpha > 0.02);
+    pieces.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.angle += p.spin;
+      if (p.y > canvas.height * 0.75) p.alpha -= 0.018;
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    if (pieces.length) requestAnimationFrame(animateConfetti);
+    else animating = false;
+  }
+
+  /* ── Auto-launch on load ── */
+  window.addEventListener('load', () => {
+    spawnConfetti();
+    launchBalloons();
+    setTimeout(newShayari, 1200);
+  });
+</script>
+</body>
+</html>
