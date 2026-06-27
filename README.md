@@ -1,1 +1,3 @@
-# happy-birthday-Vanshika-
+# happy-birthday
+Happy Birthday Website made using Html, css and JavaScript
+<a href="https://programmergaurav.github.io/happy-birthday/?name=Vanshika" target="blank">Click Here</a>
